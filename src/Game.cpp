@@ -5,8 +5,18 @@ void Game::init(std::string t_windowName, int t_x, int t_y, int t_width, int t_h
     window = SDL_CreateWindow(t_windowName.c_str(), t_x, t_y, t_width, t_height, t_flags);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    Button* btn = new Button(50, 50, renderer, new BuildClayBrickCommand(), "clay make");
+    Button* btn = new Button(0, 50, renderer, new BuildClayBrickCommand(), "clay make");
     buttons.push_back(btn);
+    btn = new Button(250, 50, renderer, new BuildLegoBrickCommand(), "lego make");
+    buttons.push_back(btn);
+    btn = new Button(500, 50, renderer, new BuildWoodBrickCommand(), "wood make");
+    buttons.push_back(btn);
+
+    //btn = new Button(0, 500, renderer, new , "Undo");
+    //buttons.push_back(btn);
+
+    //btn = new Button(500, 500, renderer, new , "redo");
+    //buttons.push_back(btn);
 }
 
  bool Game::IsRunning()

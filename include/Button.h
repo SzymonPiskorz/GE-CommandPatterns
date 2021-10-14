@@ -44,12 +44,12 @@ public:
         {
             return true;
         }
+        return false;
     }
 
     void ButtonClick()
     {
-        std::cout << m_buttonName << " Pressed"<< std::endl;
-        m_command;
+        m_command->execute();
     }
 
     void Draw()
