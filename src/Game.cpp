@@ -12,11 +12,17 @@ void Game::init(std::string t_windowName, int t_x, int t_y, int t_width, int t_h
     btn = new Button(500, 50, renderer, new BuildWoodBrickCommand(), "wood make");
     buttons.push_back(btn);
 
-    //btn = new Button(0, 500, renderer, new , "Undo");
-    //buttons.push_back(btn);
+    btn = new ButtonCommand(0, 500, renderer, nullptr, "Undo");
+    buttons.push_back(btn);
 
-    //btn = new Button(500, 500, renderer, new , "redo");
-    //buttons.push_back(btn);
+    btn = new ButtonCommand(250, 500, renderer, nullptr, "Redo");
+    buttons.push_back(btn);
+
+    btn = new ButtonCommand(500, 500, renderer, nullptr, "Build");
+    buttons.push_back(btn);
+
+    static_cast<ButtonCommand*>(buttons.at(3))->removeCommand(true);
+    static_cast<ButtonCommand*>(buttons.at(5))->addFunc(Game::display, this);
 }
 
  bool Game::IsRunning()
@@ -46,7 +52,7 @@ void Game::HandleEvents()
             default:
                 break;
         }
-         int x,y;
+        int x,y;
         Uint32 mouseBtns;
 
         mouseBtns = SDL_GetMouseState(&x, &y);
@@ -57,7 +63,7 @@ void Game::HandleEvents()
             {
                 if(btn->ButtonPress(x, y))
                 {
-                    btn->ButtonClick();
+                    btn->click(&m_macros);
                 }
             }
         }
@@ -88,4 +94,19 @@ void Game::CleanUp()
     //std::cout << "Cleaning Up";
     //std::cout << std::endl;
     SDL_DestroyWindow(window);
+}
+
+void Game::display()
+{
+    m_macros.execute();
+    std::string string = "Built: ";
+
+    for(auto& brick : bricks)
+    {
+        string +=  brick->getBrickName() + " , ";
+    }
+
+    bricks.clear();
+
+    std::cout << string << std::endl;
 }

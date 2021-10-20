@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include "Button.h"
 #include "Command.h"
+#include "Global.h"
 
 class Game
 {
@@ -17,6 +18,8 @@ public:
     void Render();
     void CleanUp();
 
+    void display();
+
 private:
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -24,5 +27,5 @@ private:
 
     std::vector<Button*> buttons;
 
-    MacroCommand* m_macros;
+    MacroCommand m_macros;
 };

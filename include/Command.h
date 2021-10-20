@@ -8,6 +8,7 @@
 #include "ClayBrickFactory.h"
 #include "WoodBrickFactory.h"
 #include <stack>
+#include "Global.h"
 
 class Command
 {
@@ -15,34 +16,45 @@ public:
 
     ~Command(){};
     virtual void execute() = 0;
-
+    virtual void undo(){};
+    virtual void redo(){};
     virtual void add(){m_count++;};
     virtual void remove(){m_count--;};
-    virtual int getCount(){return m_count;}
+    virtual int getNumber(){return m_count;}
 
 protected:
     Command(){};
-    int m_count;
+    int m_count = 0;
 };
 
 class MacroCommand : public Command
 {
 public:
 
-    MacroCommand();
-    virtual ~MacroCommand();
+    MacroCommand(){};
+    virtual ~MacroCommand(){};
 
     virtual void  add(Command* command)
     {
-        commands.push_back(command);
         command->add();
+        commands.push_back(command);
     }  
 
-    virtual void excecute()
+    virtual void execute()
     {
         for(Command* command : commands)
         {
             command->execute();
+        }
+    }
+
+    virtual void remove()
+    {
+        if(commands.size() > 0)
+        {
+            removedCommands.push(commands.at(commands.size() - 1));
+            commands.pop_back();
+            removedCommands.top()->remove();
         }
     }
 
@@ -75,46 +87,56 @@ protected:
 
 class BuildLegoBrickCommand : public Command
 {
-protected:
-    std::vector<Brick*>LegoBricks;
 
 public:
     virtual void execute()
     {
         std::cout << "Lego brick execute" << std::endl; 
         Factory* factory = new LegoBrickFactory();
-        LegoBricks = factory->getBricks(1, new DrawImpl("Lego"));
+        bricks = factory->getBricks(1, new DrawImpl("Lego"));
         add();
+    }
+
+    virtual void undo()
+    {
+        bricks.pop_back();
+        remove();
     }
 };
 
 class BuildClayBrickCommand : public Command
 {
-protected:
-    std::vector<Brick*>ClayBricks;
-
 public:
     virtual void execute()
     {
         std::cout << "Clay brick execute" << std::endl; 
         Factory* factory = new ClayBrickFactory();
-        ClayBricks = factory->getBricks(1, new DrawImpl("Clay"));
+        bricks = factory->getBricks(1, new DrawImpl("Clay"));
         add();
+    }
+
+    virtual void undo()
+    {
+        bricks.pop_back();
+        remove();
     }
 };
 
 class BuildWoodBrickCommand : public Command
 {
-protected:
-    std::vector<Brick*>WoodBricks;
-
 public:
     virtual void execute()
     {
         std::cout << "Wood brick execute" << std::endl; 
         Factory* factory = new ClayBrickFactory();
-        WoodBricks = factory->getBricks(1, new DrawImpl("Wood"));
+        bricks = factory->getBricks(1, new DrawImpl("Wood"));
         add();
+    }
+
+    virtual void undo()
+    {
+        bricks.pop_back();
+        remove();
     }
 };
 

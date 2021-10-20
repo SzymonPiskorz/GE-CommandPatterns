@@ -15,4 +15,9 @@ public:
     {
         api->Draw();
     }
+
+    std::string getBrickName()
+    {
+        return "Lego Brick";
+    }
 };
