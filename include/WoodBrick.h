@@ -10,6 +10,7 @@ public:
     {
 
     }
+    WoodBrick(){};
 
     void draw()
     {

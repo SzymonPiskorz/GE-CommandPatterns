@@ -10,6 +10,7 @@ public:
     {
 
     }
+    ClayBrick(){};
     
     void draw()
     {

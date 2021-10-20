@@ -16,4 +16,9 @@ public:
 
         return brickValues;
     }
+
+    Brick* getBrick()
+    {
+        return new WoodBrick();
+    }
 };

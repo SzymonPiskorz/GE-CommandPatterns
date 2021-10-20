@@ -98,7 +98,7 @@ void Game::CleanUp()
 
 void Game::display()
 {
-    m_macros.execute();
+    //m_macros.execute();
     std::string string = "Built: ";
 
     for(auto& brick : bricks)

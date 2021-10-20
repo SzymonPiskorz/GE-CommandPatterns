@@ -10,6 +10,7 @@ public:
     {
 
     }
+    LegoBrick(){};
 
     void draw()
     {

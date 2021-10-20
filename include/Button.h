@@ -117,6 +117,6 @@ public:
     }
 private:
     bool m_removeCommand;
-    std::function<void(Game*)> m_func;
-    Game* m_caller;
+    std::function<void(Game*)> m_func = nullptr;
+    Game* m_caller = nullptr;
 };

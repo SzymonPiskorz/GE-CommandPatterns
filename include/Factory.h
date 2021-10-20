@@ -6,4 +6,5 @@ class Factory
 {
 public:
     virtual std::vector<Brick*> getBricks(int t_numOfBricks, DrawAPI* t_drawApi) = 0;
+    virtual Brick* getBrick() = 0; 
 };

@@ -64,6 +64,7 @@ public:
         {
             std::cout << "Undo" << std::endl;
             removedCommands.push(commands[commands.size()-1]);
+            commands.at(commands.size() - 1)->undo();
             commands.pop_back();
             removedCommands.top()->remove();
         }
@@ -73,8 +74,9 @@ public:
     {
         if (removedCommands.size() > 0 )
         {
-             std::cout << "Redo" << std::endl;
+            std::cout << "Redo" << std::endl;
             removedCommands.top()->add();
+            removedCommands.top()->redo();
             commands.push_back(removedCommands.top());
             removedCommands.pop();
         }
@@ -93,14 +95,14 @@ public:
     {
         std::cout << "Lego brick execute" << std::endl; 
         Factory* factory = new LegoBrickFactory();
-        bricks = factory->getBricks(1, new DrawImpl("Lego"));
+        bricks.push_back(factory->getBrick());
         add();
     }
 
     virtual void undo()
     {
         bricks.pop_back();
-        remove();
+        //remove();
     }
 };
 
@@ -111,14 +113,14 @@ public:
     {
         std::cout << "Clay brick execute" << std::endl; 
         Factory* factory = new ClayBrickFactory();
-        bricks = factory->getBricks(1, new DrawImpl("Clay"));
+        bricks.push_back(factory->getBrick());
         add();
     }
 
     virtual void undo()
     {
         bricks.pop_back();
-        remove();
+        //remove();
     }
 };
 
@@ -128,15 +130,15 @@ public:
     virtual void execute()
     {
         std::cout << "Wood brick execute" << std::endl; 
-        Factory* factory = new ClayBrickFactory();
-        bricks = factory->getBricks(1, new DrawImpl("Wood"));
+        Factory* factory = new WoodBrickFactory();
+        bricks.push_back(factory->getBrick());
         add();
     }
 
     virtual void undo()
     {
         bricks.pop_back();
-        remove();
+        //remove();
     }
 };
 
